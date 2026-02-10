@@ -1,60 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Countdown to Friday Night</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #00ffcc;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
-    h1 {
-      font-size: 3em;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>FRIDAY NIGHT COUNTDOWN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    color: white;
+    font-family: Impact, Arial Black, sans-serif;
+    text-align: center;
+    animation: bgFlash 1s infinite;
+  }
+
+  @keyframes bgFlash {
+    0% { background: #ff004c; }
+    25% { background: #00eaff; }
+    50% { background: #7cff00; }
+    75% { background: #ffae00; }
+    100% { background: #ff004c; }
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    animation: shake 0.5s infinite;
+  }
+
+  @keyframes shake {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(5px,-5px); }
+    50% { transform: translate(-5px,5px); }
+    75% { transform: translate(5px,5px); }
+    100% { transform: translate(0,0); }
+  }
+
+  .count {
+    font-size: clamp(2rem, 6vw, 4rem);
+    margin-top: 20px;
+  }
+
+  .party {
+    font-size: clamp(3rem, 10vw, 8rem);
+    animation: pulse 0.3s infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
+  }
+</style>
 </head>
+
 <body>
 
-<h1 id="countdown">Loading...</h1>
+<div id="content">
+  <h1>🚨 FRIDAY NIGHT INCOMING 🚨</h1>
+  <div class="count" id="countdown">LOADING...</div>
+</div>
+
+<audio id="airhorn">
+  <source src="https://www.myinstants.com/media/sounds/air-horn.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-function getNextFridayNight() {
+function getNextFriday7PM() {
   const now = new Date();
   const friday = new Date(now);
-  friday.setDate(now.getDate() + ((5 - now.getDay() + 7) % 7));
-  friday.setHours(19, 0, 0, 0); // Friday at 7:00 PM
+  const day = now.getDay();
+  const diff = (5 - day + 7) % 7;
 
-  if (friday < now) {
+  friday.setDate(now.getDate() + diff);
+  friday.setHours(19, 0, 0, 0);
+
+  if (friday <= now) {
     friday.setDate(friday.getDate() + 7);
   }
 
   return friday;
 }
 
-const target = getNextFridayNight();
+const target = getNextFriday7PM();
+const countdownEl = document.getElementById("countdown");
+const airhorn = document.getElementById("airhorn");
 
 function updateCountdown() {
   const now = new Date();
   const diff = target - now;
 
   if (diff <= 0) {
-    document.getElementById("countdown").innerHTML = "🎉 IT'S FRIDAY NIGHT 🎉";
+    document.body.innerHTML = `
+      <div class="party">
+        🎉 IT'S FRIDAY NIGHT 🎉<br>
+        🕺💃 PARTY TIME 💃🕺<br>
+        🍻🔥🎶
+      </div>
+    `;
+    airhorn.play();
+    setInterval(() => airhorn.play(), 4000);
     return;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
 
-  document.getElementById("countdown").innerHTML =
-    `${days}d ${hours}h ${minutes}m ${seconds}s until Friday Night`;
+  countdownEl.innerHTML = `
+    ⏳ ${d}D ${h}H ${m}M ${s}S ⏳<br>
+    🔥 UNTIL 7PM FRIDAY 🔥
+  `;
 }
 
 updateCountdown();
