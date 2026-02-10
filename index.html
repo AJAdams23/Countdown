@@ -6,97 +6,136 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-  * { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-  body {
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
-    font-family: Impact, Arial Black, sans-serif;
-    text-align: center;
-    color: white;
-    animation: bgChaos 0.3s infinite;
-  }
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Impact, Arial Black, sans-serif;
+  color: white;
+  background: #1a1a2e;
+  animation: bgChaos 6s infinite alternate;
+}
 
-  @keyframes bgChaos {
-    0% { background: red; }
-    25% { background: purple; }
-    50% { background: lime; }
-    75% { background: cyan; }
-    100% { background: red; }
-  }
+/* Calm club-style color cycling */
+@keyframes bgChaos {
+  0%   { background: #1a1a2e; }
+  25%  { background: #16213e; }
+  50%  { background: #0f3460; }
+  75%  { background: #53354a; }
+  100% { background: #1a1a2e; }
+}
 
-  #container {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    animation: screenShake 0.15s infinite;
-  }
+/* True center layout */
+#container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  text-align: center;
+  animation: screenShake 0.25s infinite;
+}
 
-  @keyframes screenShake {
-    0% { transform: translate(-5px, 5px); }
-    25% { transform: translate(5px, -5px); }
-    50% { transform: translate(-5px, -5px); }
-    75% { transform: translate(5px, 5px); }
-    100% { transform: translate(0, 0); }
-  }
+@keyframes screenShake {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(2px, -2px); }
+  50%  { transform: translate(-2px, 2px); }
+  75%  { transform: translate(2px, 2px); }
+  100% { transform: translate(0, 0); }
+}
 
-  h1 {
-    font-size: clamp(3rem, 10vw, 7rem);
-    text-shadow: 0 0 20px black;
-  }
+h1 {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  margin: 0;
+  text-shadow: 0 0 15px rgba(0,0,0,0.8);
+}
 
-  #countdown {
-    font-size: clamp(2rem, 6vw, 4rem);
-    margin: 20px;
-  }
+#countdown {
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
 
-  button {
-    font-size: clamp(1.5rem, 5vw, 3rem);
-    padding: 20px 40px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    background: gold;
-    color: black;
-    animation: buttonPulse 0.4s infinite alternate;
-  }
+.buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-  @keyframes buttonPulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.2); }
-  }
+button {
+  font-size: clamp(1.4rem, 4vw, 2.5rem);
+  padding: 18px 36px;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+  background: #f5c542;
+  color: #111;
+  box-shadow: 0 0 15px rgba(245,197,66,0.6);
+  animation: buttonPulse 0.8s infinite alternate;
+}
 
-  #drinkOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-  }
+@keyframes buttonPulse {
+  from { transform: scale(1); }
+  to   { transform: scale(1.08); }
+}
 
-  #drinkOverlay img {
-    max-width: 80vw;
-    max-height: 80vh;
-    animation: spinZoom 0.6s infinite linear;
-  }
+/* Drink overlay */
+#drinkOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
 
-  @keyframes spinZoom {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.4); }
-    100% { transform: rotate(360deg) scale(1); }
+#drinkOverlay img {
+  max-width: 80vw;
+  max-height: 80vh;
+  animation: spinZoom 0.8s infinite linear;
+}
+
+@keyframes spinZoom {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(180deg) scale(1.3); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* Falling drink emojis */
+.drink {
+  position: fixed;
+  top: -100px;
+  font-size: 4rem;
+  animation: fall linear forwards;
+  z-index: 1000;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(120vh) rotate(720deg);
   }
+}
 </style>
 </head>
 
 <body>
 
 <div id="container">
-  <h1>🚨 FRIDAY NIGHT MAYHEM 🚨</h1>
+  <h1>🍻 FRIDAY NIGHT MAYHEM 🍻</h1>
   <div id="countdown">LOADING...</div>
-  <button onclick="summonDrink()">🍺 SMASH FOR BEER 🍺</button>
+
+  <div class="buttons">
+    <button onclick="summonDrink()">🍺 BEER 🍺</button>
+    <button onclick="summonShot()">🥃 SHOT 🥃</button>
+    <button onclick="drinkRain()">🌧️ DRINK RAIN 🌧️</button>
+  </div>
 </div>
 
 <div id="drinkOverlay" onclick="hideDrink()">
@@ -118,8 +157,14 @@ const drinkImg = document.getElementById("drinkImg");
 const boom = document.getElementById("boom");
 
 function summonDrink() {
-  const random = drinks[Math.floor(Math.random() * drinks.length)];
-  drinkImg.src = random;
+  drinkImg.src = drinks[Math.floor(Math.random() * drinks.length)];
+  overlay.style.display = "flex";
+  boom.currentTime = 0;
+  boom.play();
+}
+
+function summonShot() {
+  drinkImg.src = "https://upload.wikimedia.org/wikipedia/commons/1/15/Shot_glass.jpg";
   overlay.style.display = "flex";
   boom.currentTime = 0;
   boom.play();
@@ -129,6 +174,21 @@ function hideDrink() {
   overlay.style.display = "none";
 }
 
+function drinkRain() {
+  for (let i = 0; i < 25; i++) {
+    setTimeout(() => {
+      const d = document.createElement("div");
+      d.className = "drink";
+      d.innerText = ["🍺","🥃","🍹","🍻"][Math.floor(Math.random()*4)];
+      d.style.left = Math.random() * 100 + "vw";
+      d.style.animationDuration = (Math.random() * 2 + 2) + "s";
+      document.body.appendChild(d);
+      setTimeout(() => d.remove(), 4000);
+    }, i * 120);
+  }
+}
+
+/* Countdown to Friday 7PM */
 function getNextFriday7PM() {
   const now = new Date();
   const friday = new Date(now);
@@ -144,14 +204,17 @@ const cd = document.getElementById("countdown");
 
 setInterval(() => {
   const diff = target - new Date();
+
   if (diff <= 0) {
     document.body.innerHTML = "🎉🍻 IT'S FRIDAY NIGHT 🍻🎉";
     return;
   }
+
   const d = Math.floor(diff / 86400000);
   const h = Math.floor(diff / 3600000 % 24);
   const m = Math.floor(diff / 60000 % 60);
   const s = Math.floor(diff / 1000 % 60);
+
   cd.innerHTML = `⏳ ${d}D ${h}H ${m}M ${s}S UNTIL 7PM ⏳`;
 }, 1000);
 </script>
