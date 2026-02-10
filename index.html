@@ -2,123 +2,158 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FRIDAY NIGHT COUNTDOWN</title>
+<title>FRIDAY NIGHT MAYHEM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+  * { box-sizing: border-box; }
+
   body {
     margin: 0;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: black;
-    color: white;
+    overflow: hidden;
     font-family: Impact, Arial Black, sans-serif;
     text-align: center;
-    animation: bgFlash 1s infinite;
+    color: white;
+    animation: bgChaos 0.3s infinite;
   }
 
-  @keyframes bgFlash {
-    0% { background: #ff004c; }
-    25% { background: #00eaff; }
-    50% { background: #7cff00; }
-    75% { background: #ffae00; }
-    100% { background: #ff004c; }
+  @keyframes bgChaos {
+    0% { background: red; }
+    25% { background: purple; }
+    50% { background: lime; }
+    75% { background: cyan; }
+    100% { background: red; }
+  }
+
+  #container {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: screenShake 0.15s infinite;
+  }
+
+  @keyframes screenShake {
+    0% { transform: translate(-5px, 5px); }
+    25% { transform: translate(5px, -5px); }
+    50% { transform: translate(-5px, -5px); }
+    75% { transform: translate(5px, 5px); }
+    100% { transform: translate(0, 0); }
   }
 
   h1 {
-    font-size: clamp(2.5rem, 8vw, 6rem);
-    animation: shake 0.5s infinite;
+    font-size: clamp(3rem, 10vw, 7rem);
+    text-shadow: 0 0 20px black;
   }
 
-  @keyframes shake {
-    0% { transform: translate(0,0); }
-    25% { transform: translate(5px,-5px); }
-    50% { transform: translate(-5px,5px); }
-    75% { transform: translate(5px,5px); }
-    100% { transform: translate(0,0); }
-  }
-
-  .count {
+  #countdown {
     font-size: clamp(2rem, 6vw, 4rem);
-    margin-top: 20px;
+    margin: 20px;
   }
 
-  .party {
-    font-size: clamp(3rem, 10vw, 8rem);
-    animation: pulse 0.3s infinite alternate;
+  button {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    padding: 20px 40px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: gold;
+    color: black;
+    animation: buttonPulse 0.4s infinite alternate;
   }
 
-  @keyframes pulse {
+  @keyframes buttonPulse {
     from { transform: scale(1); }
     to { transform: scale(1.2); }
+  }
+
+  #drinkOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+
+  #drinkOverlay img {
+    max-width: 80vw;
+    max-height: 80vh;
+    animation: spinZoom 0.6s infinite linear;
+  }
+
+  @keyframes spinZoom {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.4); }
+    100% { transform: rotate(360deg) scale(1); }
   }
 </style>
 </head>
 
 <body>
 
-<div id="content">
-  <h1>🚨 FRIDAY NIGHT INCOMING 🚨</h1>
-  <div class="count" id="countdown">LOADING...</div>
+<div id="container">
+  <h1>🚨 FRIDAY NIGHT MAYHEM 🚨</h1>
+  <div id="countdown">LOADING...</div>
+  <button onclick="summonDrink()">🍺 SMASH FOR BEER 🍺</button>
 </div>
 
-<audio id="airhorn">
-  <source src="https://www.myinstants.com/media/sounds/air-horn.mp3" type="audio/mpeg">
+<div id="drinkOverlay" onclick="hideDrink()">
+  <img id="drinkImg" src="">
+</div>
+
+<audio id="boom">
+  <source src="https://www.myinstants.com/media/sounds/mlg-airhorn.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+const drinks = [
+  "https://upload.wikimedia.org/wikipedia/commons/6/60/Beer_mug.jpg",
+  "https://upload.wikimedia.org/wikipedia/commons/7/75/High_Noon_Hard_Seltzer.jpg"
+];
+
+const overlay = document.getElementById("drinkOverlay");
+const drinkImg = document.getElementById("drinkImg");
+const boom = document.getElementById("boom");
+
+function summonDrink() {
+  const random = drinks[Math.floor(Math.random() * drinks.length)];
+  drinkImg.src = random;
+  overlay.style.display = "flex";
+  boom.currentTime = 0;
+  boom.play();
+}
+
+function hideDrink() {
+  overlay.style.display = "none";
+}
+
 function getNextFriday7PM() {
   const now = new Date();
   const friday = new Date(now);
-  const day = now.getDay();
-  const diff = (5 - day + 7) % 7;
-
+  const diff = (5 - now.getDay() + 7) % 7;
   friday.setDate(now.getDate() + diff);
   friday.setHours(19, 0, 0, 0);
-
-  if (friday <= now) {
-    friday.setDate(friday.getDate() + 7);
-  }
-
+  if (friday <= now) friday.setDate(friday.getDate() + 7);
   return friday;
 }
 
 const target = getNextFriday7PM();
-const countdownEl = document.getElementById("countdown");
-const airhorn = document.getElementById("airhorn");
+const cd = document.getElementById("countdown");
 
-function updateCountdown() {
-  const now = new Date();
-  const diff = target - now;
-
+setInterval(() => {
+  const diff = target - new Date();
   if (diff <= 0) {
-    document.body.innerHTML = `
-      <div class="party">
-        🎉 IT'S FRIDAY NIGHT 🎉<br>
-        🕺💃 PARTY TIME 💃🕺<br>
-        🍻🔥🎶
-      </div>
-    `;
-    airhorn.play();
-    setInterval(() => airhorn.play(), 4000);
+    document.body.innerHTML = "🎉🍻 IT'S FRIDAY NIGHT 🍻🎉";
     return;
   }
-
-  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const m = Math.floor((diff / (1000 * 60)) % 60);
-  const s = Math.floor((diff / 1000) % 60);
-
-  countdownEl.innerHTML = `
-    ⏳ ${d}D ${h}H ${m}M ${s}S ⏳<br>
-    🔥 UNTIL 7PM FRIDAY 🔥
-  `;
-}
-
-updateCountdown();
-setInterval(updateCountdown, 1000);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff / 3600000 % 24);
+  const m = Math.floor(diff / 60000 % 60);
+  const s = Math.floor(diff / 1000 % 60);
+  cd.innerHTML = `⏳ ${d}D ${h}H ${m}M ${s}S UNTIL 7PM ⏳`;
+}, 1000);
 </script>
 
 </body>
