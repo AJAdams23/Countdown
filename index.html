@@ -2,212 +2,234 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MARCH MADNESS</title>
+<title>March Madness</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* {
-  box-sizing: border-box;
+
+*{
+box-sizing:border-box;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  font-family: Impact, Arial Black, sans-serif;
-  color: white;
+body{
+margin:0;
+min-height:100vh;
+display:grid;
+place-items:center;
+overflow:hidden;
+font-family:Impact,Arial Black,sans-serif;
+color:white;
 
-  background:
-  linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.7)),
-  url("https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=1920&q=80");
+background:
+linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.8)),
+url("https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=1920&q=80");
 
-  background-size: cover;
-  background-position: center;
-  animation: bgPulse 8s infinite alternate;
+background-size:cover;
+background-position:center;
+animation:bgPulse 8s infinite alternate;
 }
 
-@keyframes bgPulse {
-  0% { filter: brightness(0.9); }
-  100% { filter: brightness(1.15); }
+@keyframes bgPulse{
+0%{filter:brightness(.9);}
+100%{filter:brightness(1.2);}
 }
 
-#container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  text-align: center;
-  transform: translateY(-6vh);
+#container{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:25px;
+text-align:center;
+transform:translateY(-6vh);
 }
 
-h1 {
-  margin: 0;
-  font-size: clamp(3rem, 8vw, 6rem);
-  text-shadow: 0 0 15px black;
+h1{
+margin:0;
+font-size:clamp(3rem,8vw,6rem);
+text-shadow:0 0 15px black;
 }
 
-#countdown {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  text-shadow: 0 0 10px black;
+.subtitle{
+margin-top:-10px;
+font-size:clamp(1.2rem,3vw,2rem);
+letter-spacing:2px;
+color:#ffd27f;
+animation:glow 2s infinite alternate;
 }
 
-.buttons {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-  justify-content: center;
+@keyframes glow{
+from{text-shadow:0 0 8px #ff9d00;}
+to{text-shadow:0 0 22px #ff4500;}
 }
 
-button {
-  font-size: clamp(1.3rem, 4vw, 2.3rem);
-  padding: 16px 34px;
-  border-radius: 18px;
-  border: none;
-  cursor: pointer;
-  background: #ff7a00;
-  color: white;
-  box-shadow: 0 0 15px rgba(255,120,0,0.7);
-  transition: transform 0.15s ease;
+#countdown{
+font-size:clamp(2rem,5vw,3.5rem);
+text-shadow:0 0 10px black;
 }
 
-button:hover {
-  transform: scale(1.08);
+.buttons{
+display:flex;
+gap:18px;
+flex-wrap:wrap;
+justify-content:center;
 }
 
-/* OVERLAY */
-
-#ballOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.9);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+button{
+font-size:clamp(1.3rem,4vw,2.3rem);
+padding:16px 34px;
+border-radius:18px;
+border:none;
+cursor:pointer;
+background:#ff7a00;
+color:white;
+box-shadow:0 0 15px rgba(255,120,0,.7);
+transition:transform .15s ease;
 }
 
-#ballOverlay img {
-  max-width: 70vw;
-  max-height: 70vh;
-  animation: spin 1s infinite linear;
+button:hover{
+transform:scale(1.08);
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg) scale(1); }
-  to   { transform: rotate(360deg) scale(1.3); }
+/* overlay */
+
+#overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.9);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:1000;
 }
 
-/* BALL RAIN */
-
-.ball {
-  position: fixed;
-  top: -100px;
-  font-size: 3.5rem;
-  animation: fall linear forwards;
-  z-index: 999;
-}
-.subtitle {
-  margin-top: -10px;
-  font-size: clamp(1.2rem, 3vw, 2rem);
-  color: #ffd27f;
-  text-shadow: 0 0 10px black;
+#overlay img{
+max-width:70vw;
+max-height:70vh;
+animation:spin 1s infinite linear;
 }
 
-@keyframes fall {
-  to {
-    transform: translateY(120vh) rotate(720deg);
-  }
+@keyframes spin{
+from{transform:rotate(0deg) scale(1);}
+to{transform:rotate(360deg) scale(1.3);}
 }
+
+/* rain */
+
+.shot{
+position:fixed;
+top:-100px;
+font-size:3.5rem;
+animation:fall linear forwards;
+z-index:999;
+}
+
+@keyframes fall{
+to{
+transform:translateY(120vh) rotate(720deg);
+}
+}
+
 </style>
 </head>
 
 <body>
 
 <div id="container">
-  <h1>🏀 MARCH MADNESS 🏀</h1>
-  <h2> class="subtitle">We're so back</h2>
 
-  <div id="countdown">LOADING...</div>
+<h1>🏀 MARCH MADNESS 🏀</h1>
+<h2 class="subtitle">We're so back</h2>
 
-  <div class="buttons">
-    <button onclick="summonBall()">🏀 BASKETBALL</button>
-    <button onclick="slamDunk()">🔥 SLAM DUNK</button>
-    <button onclick="ballRain()">🌧️ BALL RAIN</button>
-  </div>
+<div id="countdown">LOADING...</div>
+
+<div class="buttons">
+
+<button onclick="basketball()">🏀 Basketball</button>
+
+<button onclick="shotRain()">🥃 So Many Shots</button>
+
+<button onclick="fireball()">🔥 Give it you're all</button>
+
 </div>
 
-<div id="ballOverlay" onclick="hideBall()">
-  <img id="ballImg">
+</div>
+
+<div id="overlay" onclick="hideOverlay()">
+<img id="overlayImg">
 </div>
 
 <script>
 
-const balls = [
-"https://upload.wikimedia.org/wikipedia/commons/7/7a/Basketball.png"
-];
+const overlay=document.getElementById("overlay")
+const overlayImg=document.getElementById("overlayImg")
 
-const overlay = document.getElementById("ballOverlay");
-const ballImg = document.getElementById("ballImg");
+function basketball(){
 
-function summonBall() {
-  ballImg.src = balls[0];
-  overlay.style.display = "flex";
+overlayImg.src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Basketball.png"
+overlay.style.display="flex"
+
 }
 
-function slamDunk() {
-  ballImg.src = "https://cdn-icons-png.flaticon.com/512/889/889455.png";
-  overlay.style.display = "flex";
+function fireball(){
+
+overlayImg.src="https://www.pngitem.com/pimgs/m/164-1648775_fireball-whiskey-fireball-cinnamon-whisky-1-75.png"
+overlay.style.display="flex"
+
 }
 
-function hideBall() {
-  overlay.style.display = "none";
+function hideOverlay(){
+overlay.style.display="none"
 }
 
-/* BALL RAIN */
+/* shot rain */
 
-function ballRain() {
-  for (let i = 0; i < 30; i++) {
-    setTimeout(() => {
+function shotRain(){
 
-      const b = document.createElement("div");
-      b.className = "ball";
-      b.textContent = "🏀";
+for(let i=0;i<30;i++){
 
-      b.style.left = Math.random() * 100 + "vw";
-      b.style.animationDuration = (Math.random() * 2 + 2) + "s";
+setTimeout(()=>{
 
-      document.body.appendChild(b);
+const s=document.createElement("div")
+s.className="shot"
 
-      setTimeout(() => b.remove(), 4000);
+s.textContent=["🥃","🍺","🍻"][Math.floor(Math.random()*3)]
 
-    }, i * 120);
-  }
+s.style.left=Math.random()*100+"vw"
+s.style.animationDuration=(Math.random()*2+2)+"s"
+
+document.body.appendChild(s)
+
+setTimeout(()=>s.remove(),4000)
+
+},i*120)
+
 }
 
-/* COUNTDOWN TO MARCH 21 6PM */
+}
 
-const target = new Date("March 21, 2026 18:00:00");
-const cd = document.getElementById("countdown");
+/* countdown */
 
-setInterval(() => {
+const target=new Date("March 21, 2026 18:00:00")
+const cd=document.getElementById("countdown")
 
-  const diff = target - new Date();
+setInterval(()=>{
 
-  if (diff <= 0) {
-    document.body.innerHTML = "🏀🔥 IT'S MARCH MADNESS NIGHT 🔥🏀";
-    return;
-  }
+const diff=target-new Date()
 
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor(diff / 3600000 % 24);
-  const m = Math.floor(diff / 60000 % 60);
-  const s = Math.floor(diff / 1000 % 60);
+if(diff<=0){
 
-  cd.textContent = `⏳ ${d}D ${h}H ${m}M ${s}S UNTIL TIPOFF ⏳`;
+document.body.innerHTML="🏀🔥 IT'S MARCH MADNESS 🔥🏀"
+return
 
-}, 1000);
+}
+
+const d=Math.floor(diff/86400000)
+const h=Math.floor(diff/3600000%24)
+const m=Math.floor(diff/60000%60)
+const s=Math.floor(diff/1000%60)
+
+cd.textContent=`⏳ ${d}D ${h}H ${m}M ${s}S UNTIL TIPOFF ⏳`
+
+},1000)
 
 </script>
 
