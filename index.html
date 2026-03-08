@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FISHBOWL THIS FRIDAY????</title>
+<title>MARCH MADNESS NIGHT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -18,39 +18,39 @@ body {
   overflow: hidden;
   font-family: Impact, Arial Black, sans-serif;
   color: white;
-  background: #1a1a2e;
+
+  background:
+  linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.7)),
+  url("https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=1920&q=80");
+
+  background-size: cover;
+  background-position: center;
   animation: bgPulse 8s infinite alternate;
 }
 
-/* Subtle background motion ONLY */
 @keyframes bgPulse {
-  0%   { background: #1a1a2e; }
-  25%  { background: #16213e; }
-  50%  { background: #0f3460; }
-  75%  { background: #53354a; }
-  100% { background: #1a1a2e; }
+  0% { filter: brightness(0.9); }
+  100% { filter: brightness(1.15); }
 }
 
-/* TRUE CENTER CONTAINER */
 #container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 28px;
   text-align: center;
-  transform: translateY(-6vh); /* optical centering fix */
+  transform: translateY(-6vh);
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(2.8rem, 8vw, 6rem);
-  text-shadow: 0 0 12px rgba(0,0,0,0.7);
+  font-size: clamp(3rem, 8vw, 6rem);
+  text-shadow: 0 0 15px black;
 }
 
 #countdown {
-  font-size: clamp(1.9rem, 5vw, 3.5rem);
-  letter-spacing: 1px;
-  text-shadow: 0 0 10px rgba(0,0,0,0.6);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-shadow: 0 0 10px black;
 }
 
 .buttons {
@@ -66,9 +66,9 @@ button {
   border-radius: 18px;
   border: none;
   cursor: pointer;
-  background: #f2c94c;
-  color: #111;
-  box-shadow: 0 0 12px rgba(242,201,76,0.5);
+  background: #ff7a00;
+  color: white;
+  box-shadow: 0 0 15px rgba(255,120,0,0.7);
   transition: transform 0.15s ease;
 }
 
@@ -76,8 +76,9 @@ button:hover {
   transform: scale(1.08);
 }
 
-/* DRINK OVERLAY */
-#drinkOverlay {
+/* OVERLAY */
+
+#ballOverlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.9);
@@ -87,10 +88,10 @@ button:hover {
   z-index: 1000;
 }
 
-#drinkOverlay img {
-  max-width: 80vw;
-  max-height: 80vh;
-  animation: spin 0.9s infinite linear;
+#ballOverlay img {
+  max-width: 70vw;
+  max-height: 70vh;
+  animation: spin 1s infinite linear;
 }
 
 @keyframes spin {
@@ -98,8 +99,9 @@ button:hover {
   to   { transform: rotate(360deg) scale(1.3); }
 }
 
-/* DRINK RAIN */
-.drink {
+/* BALL RAIN */
+
+.ball {
   position: fixed;
   top: -100px;
   font-size: 3.5rem;
@@ -118,75 +120,76 @@ button:hover {
 <body>
 
 <div id="container">
-  <h1>🍻 FISHBOWL COUNTDOWN 🍻</h1>
+  <h1>🏀 MARCH MADNESS NIGHT 🏀</h1>
+
   <div id="countdown">LOADING...</div>
 
   <div class="buttons">
-    <button onclick="summonDrink()">🍺 BEER</button>
-    <button onclick="summonShot()">🥃 SHOT</button>
-    <button onclick="drinkRain()">🌧️ DRINK RAIN</button>
+    <button onclick="summonBall()">🏀 BASKETBALL</button>
+    <button onclick="slamDunk()">🔥 SLAM DUNK</button>
+    <button onclick="ballRain()">🌧️ BALL RAIN</button>
   </div>
 </div>
 
-<div id="drinkOverlay" onclick="hideDrink()">
-  <img id="drinkImg">
+<div id="ballOverlay" onclick="hideBall()">
+  <img id="ballImg">
 </div>
 
 <script>
-const drinks = [
-  "https://beverages2u.com/wp-content/uploads/2019/05/coors-25.jpg",
-  "https://www.finewineandgoodspirits.com/ccstore/v1/images/?source=/file/v2904857361889417349/products/000097291_1006238_F1.jpg&height=475&width=475"
+
+const balls = [
+"https://upload.wikimedia.org/wikipedia/commons/7/7a/Basketball.png"
 ];
 
-const overlay = document.getElementById("drinkOverlay");
-const drinkImg = document.getElementById("drinkImg");
+const overlay = document.getElementById("ballOverlay");
+const ballImg = document.getElementById("ballImg");
 
-function summonDrink() {
-  drinkImg.src = drinks[Math.floor(Math.random() * drinks.length)];
+function summonBall() {
+  ballImg.src = balls[0];
   overlay.style.display = "flex";
 }
 
-function summonShot() {
-  drinkImg.src = "https://www.anchorhockingfoodservice.com/wp-content/uploads/2022/01/14182_2oz_Double-Shot.jpg";
+function slamDunk() {
+  ballImg.src = "https://cdn-icons-png.flaticon.com/512/889/889455.png";
   overlay.style.display = "flex";
 }
 
-function hideDrink() {
+function hideBall() {
   overlay.style.display = "none";
 }
 
-function drinkRain() {
+/* BALL RAIN */
+
+function ballRain() {
   for (let i = 0; i < 30; i++) {
     setTimeout(() => {
-      const d = document.createElement("div");
-      d.className = "drink";
-      d.textContent = ["🍺","🥃","🍹","🍻"][Math.floor(Math.random()*4)];
-      d.style.left = Math.random() * 100 + "vw";
-      d.style.animationDuration = (Math.random() * 2 + 2) + "s";
-      document.body.appendChild(d);
-      setTimeout(() => d.remove(), 4000);
+
+      const b = document.createElement("div");
+      b.className = "ball";
+      b.textContent = "🏀";
+
+      b.style.left = Math.random() * 100 + "vw";
+      b.style.animationDuration = (Math.random() * 2 + 2) + "s";
+
+      document.body.appendChild(b);
+
+      setTimeout(() => b.remove(), 4000);
+
     }, i * 120);
   }
 }
 
-/* COUNTDOWN TO FRIDAY 7PM */
-function nextFriday7PM() {
-  const now = new Date();
-  const f = new Date(now);
-  const days = (5 - now.getDay() + 7) % 7;
-  f.setDate(now.getDate() + days);
-  f.setHours(19, 0, 0, 0);
-  if (f <= now) f.setDate(f.getDate() + 7);
-  return f;
-}
+/* COUNTDOWN TO MARCH 21 6PM */
 
-const target = nextFriday7PM();
+const target = new Date("March 21, 2026 18:00:00");
 const cd = document.getElementById("countdown");
 
 setInterval(() => {
+
   const diff = target - new Date();
+
   if (diff <= 0) {
-    document.body.innerHTML = "🎉🍻 IT'S FRIDAY NIGHT 🍻🎉";
+    document.body.innerHTML = "🏀🔥 IT'S MARCH MADNESS NIGHT 🔥🏀";
     return;
   }
 
@@ -195,10 +198,11 @@ setInterval(() => {
   const m = Math.floor(diff / 60000 % 60);
   const s = Math.floor(diff / 1000 % 60);
 
-  cd.textContent = `⏳ ${d}D ${h}H ${m}M ${s}S UNTIL 7PM ⏳`;
+  cd.textContent = `⏳ ${d}D ${h}H ${m}M ${s}S UNTIL TIPOFF ⏳`;
+
 }, 1000);
+
 </script>
 
 </body>
 </html>
-
